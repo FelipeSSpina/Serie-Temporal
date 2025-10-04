@@ -176,9 +176,6 @@ Este repositório contém um estudo de previsão de séries temporais usando **P
 - **SARIMAX+Fourier**: abordagem clássica e eficiente para **sazonalidade longa** (muito comum em dados diários), escolhendo a ordem **K** por critério de informação (AIC/AICc). :contentReference[oaicite:6]{index=6}  
 - **Métricas**: **RMSE** (penaliza grandes erros), **MAE** (interpretação direta em °C) e **MASE** (comparável entre séries/métodos; recomendado na literatura). :contentReference[oaicite:7]{index=7}
 
----
-
-Segue uma **seção de Conclusão** pronta para colar ao final do seu `README.md`. Mantive linguagem direta, com parágrafos bem separados e foco técnico.
 
 ---
 
