@@ -1,4 +1,4 @@
-# README.md 
+ 
 
 # Previsão de Série Temporal — Temperaturas mínimas diárias (Melbourne, 1981–1990)
 
@@ -10,35 +10,7 @@ Este repositório contém um estudo de previsão de séries temporais usando **P
 
 > O notebook inclui EDA, validação com origem rolante e comparação entre modelos, além de gráficos e tabelas de diagnóstico.
 
----
 
-## 📁 Organização
-
-```
-
-.
-├── README.md
-├── Notebook_TS_Melbourne_Prophet_LSTM.ipynb
-└── images/                         
-├── 01_series_full.png
-├── 02_monthly_mean.png
-├── 03_baselines_test.png
-├── 04_prophet_vs_real.png
-├── 05_lstm_vs_real.png
-├── 06_prophet_components.png
-├── 07_residuals_ts.png
-├── 08_residuals_hist.png
-├── 09_scatter_prophet.png
-├── 10_scatter_lstm.png
-├── 11_monthly_seasonality.png
-├── 12_spaghetti_yearly.png
-├── 13_sarimax_fourier_vs_real.png
-├── 14_acf.png
-├── 15_pacf.png
-├── 16_stl_trend.png
-└── 17_stl_seasonal.png
-
-```
 
 ---
 
@@ -206,6 +178,25 @@ Este repositório contém um estudo de previsão de séries temporais usando **P
 
 ---
 
+Segue uma **seção de Conclusão** pronta para colar ao final do seu `README.md`. Mantive linguagem direta, com parágrafos bem separados e foco técnico.
+
+---
+
+## ✅ Conclusão
+
+Os resultados mostram que é possível modelar a série de temperaturas mínimas diárias de Melbourne de forma acurada e interpretável. A EDA evidenciou uma sazonalidade anual forte e estável, com nível praticamente constante ao longo dos anos — um cenário que favorece modelos com componente sazonal explícita e também arquiteturas recorrentes que capturam dependências locais. A decomposição STL, os gráficos de média mensal e as funções ACF/PACF foram consistentes entre si, reforçando o caráter cíclico do fenômeno e a ausência de tendências estruturais de longo prazo.
+
+No conjunto de teste (1990), o LSTM apresentou o melhor desempenho médio em RMSE/MAE/MASE, superando as duas linhas de base e o modelo Prophet com *tuning* leve. Essa vantagem aparece em especial em transições mais abruptas, nas quais uma rede recorrente com janela curta tende a responder com maior agilidade. O Prophet, por sua vez, reproduziu com fidelidade a fase da sazonalidade anual e manteve boa estabilidade, oferecendo componentes interpretáveis (tendência e sazonalidade) que ajudam a explicar a dinâmica subjacente. A alternativa com SARIMAX e harmônicos de Fourier capturou bem a sazonalidade de período 365, com estrutura parcimoniosa e custo computacional baixo, se posicionando como opção sólida quando interpretabilidade estatística e leveza de treino são prioritárias.
+
+Os diagnósticos (resíduos no tempo e histogramas) indicaram erros centrados próximos de zero e sem padrões fortes remanescentes, o que é coerente com as métricas observadas. A comparação com o Seasonal-Naive — um *baseline* exigente para séries anuais — confirmou ganho substantivo de acurácia, quantificado pelos deltas de RMSE/MAE. Em validação com origem rolante (H=60), os padrões de desempenho se mantiveram, sugerindo que as conclusões não dependem de um único particionamento temporal.
+
+Em termos práticos, há um equilíbrio natural entre **acurácia** e **explicabilidade**: o LSTM tendeu a liderar nas métricas, enquanto Prophet e SARIMAX+Fourier forneceram componentes e parâmetros diretamente interpretáveis (tendência, sazonalidade, ordem ARIMA, harmônicos). A escolha final depende do objetivo: previsões operacionais com melhor erro absoluto, análises explicativas da sazonalidade, ou pipelines estatísticos mais leves para monitoramento.
+
+Como caminhos de evolução, recomenda-se: (i) incorporar variáveis exógenas (ex.: chuva, radiação, feriados locais) no Prophet e no SARIMAX; (ii) testar janelas/arquiteturas alternativas para o LSTM (camadas empilhadas, *dropout*, *lookback* maior ou *seq2seq* multi-horizonte); (iii) aplicar seleção sistemática do número de harmônicos no Fourier via AICc/BIC; (iv) adotar validação temporal mais extensa (mais dobras ou horizontes variados) em dados atualizados. Essas extensões tendem a consolidar o ganho já observado, sem perder a clareza de interpretação e a reprodutibilidade do fluxo atual.
+
+---
+
+
 ## ▶️ Reprodutibilidade
 
 1. Abra `Notebook_TS_Melbourne_Prophet_LSTM.ipynb` no Google Colab.  
@@ -219,10 +210,25 @@ Este repositório contém um estudo de previsão de séries temporais usando **P
 
 ## 📚 Referências
 
-- **Dataset (Kaggle)** — *Time Series Datasets* (arquivo `daily-minimum-temperatures-in-me.csv`). :contentReference[oaicite:8]{index=8}  
-- **Prophet** — *Quick Start* e *Seasonality, Holiday Effects & Regressors*. :contentReference[oaicite:9]{index=9}  
-- **Fourier + ARIMA** — sazonalidade longa e função `fourier()`. :contentReference[oaicite:10]{index=10}  
-- **MASE** — Hyndman & Koehler; notas adicionais. :contentReference[oaicite:11]{index=11}  
-- **LSTM** — artigo original. :contentReference[oaicite:12]{index=12}
+- **Dataset (Kaggle)** — *Time Series Datasets* → arquivo `daily-minimum-temperatures-in-me.csv`.  
+  https://www.kaggle.com/datasets/shenba/time-series-datasets/data?select=daily-minimum-temperatures-in-me.csv
+
+- **Prophet**  
+  Quick Start: https://facebook.github.io/prophet/docs/quick_start.html  
+  Sazonalidade / feriados / regressores: https://facebook.github.io/prophet/docs/seasonality,_holiday_effects,_and_regressors.html
+
+- **Validação em séries temporais (origem rolante) e acurácia** — Hyndman & Athanasopoulos, *Forecasting: Principles and Practice (FPP3)*  
+  Acurácia: https://otexts.com/fpp3/accuracy.html  
+  Time series cross-validation: https://otexts.com/fpp3/tscv.html
+
+- **Fourier + ARIMA (sazonalidade longa)** — função `fourier()` do pacote *forecast*  
+  https://pkg.robjhyndman.com/forecast/reference/fourier.html
+
+- **MASE** — Hyndman, R.J.; Koehler, A.B. (2006). *International Journal of Forecasting*, 22(4), 679–688.  
+  DOI: https://doi.org/10.1016/j.ijforecast.2006.03.001
+
+- **LSTM** — Hochreiter, S.; Schmidhuber, J. (1997). *Long Short-Term Memory*, *Neural Computation*, 9(8), 1735–1780.  
+  DOI: https://doi.org/10.1162/neco.1997.9.8.1735
+
 
 
